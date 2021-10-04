@@ -1,2 +1,2 @@
 # Profiling-System.
-Profiling System Registration of Residents100% Done, Deletion of Resident Information 10% Processing 
+Profiling System Registration of Residents 100% Done, Deletion of Resident Information 70% Processing 
