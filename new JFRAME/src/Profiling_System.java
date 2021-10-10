@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -31,7 +33,7 @@ import javax.swing.border.Border;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 
-public class Profiling_System extends JDBC_Connector implements ActionListener {
+public class Profiling_System extends JDBC_Connector implements ActionListener{
 
 	// Login JFrame Properties and Fields.
 	JFrame LoginFrame = new JFrame();
@@ -138,7 +140,10 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 	JTextField batchNumSecondDoseDelete_txtf;
 	JTextField vaccinationDateSecondDoseDelete_txtf;
 	JButton residentDeletion_btn;
+	JButton deletedResidentInformation_btn;
 	
+	// deleted resident information properties.
+	JFrame deletedframe; 
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 																													   //
@@ -508,7 +513,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		//
 		// Properties inside the Deleting Resident Information Registration Jpanel.
 		//
-		// Bassic Resident Information.
+		// Basic Resident Information.
 		JLabel deletinglabel = new JLabel("Delete Resident Information");
 		deletinglabel.setForeground(Color.WHITE);
 		deletinglabel.setFont(new Font("Helvetica", Font.BOLD, 35));
@@ -725,8 +730,18 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		residentDeletion_btn.setForeground(Color.WHITE);
 		residentDeletion_btn.setBackground(Color.RED);
 		residentDeletion_btn.addActionListener(this);
-		residentDeletion_btn.setBounds(320, 920, 300, 40);
+		residentDeletion_btn.setBounds(250, 920, 250, 40);
 		residentDeletion_btn.setBorder(BorderFactory.createRaisedSoftBevelBorder());	
+		
+		deletedResidentInformation_btn = new JButton();
+		deletedResidentInformation_btn.setFocusable(false);
+		deletedResidentInformation_btn.setFont(new Font("Helvetica", Font.BOLD, 14));
+		deletedResidentInformation_btn.setVerticalTextPosition(SwingConstants.CENTER);
+		deletedResidentInformation_btn.setForeground(Color.BLACK);
+		deletedResidentInformation_btn.setBackground(Color.LIGHT_GRAY);
+		deletedResidentInformation_btn.addActionListener(this);
+		deletedResidentInformation_btn.setBounds(540, 920, 250, 40);
+		deletedResidentInformation_btn.setText("Deleted Resident Infromation");
 		
 		//
 		// Component inside the Side MenuBar.
@@ -887,6 +902,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		jpanelResidentDeletion.add(vaccinationDateSecondDoseDelete_lbl);
 		jpanelResidentDeletion.add(vaccinationDateSecondDoseDelete_txtf);
 		jpanelResidentDeletion.add(residentDeletion_btn);
+		jpanelResidentDeletion.add(deletedResidentInformation_btn);
 		
 		// Added Components to the Adding Resident Registration.	
 		jpanelResidentRegistration.add(lblVaccinationInfomation);
@@ -944,6 +960,46 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		jframe.add(deleteResidentScroll);
 	}
 	
+	
+	//
+	// Deleted Resident Information.
+	//
+	public void deletedResidentInformation() {
+		
+		JLabel residentId_lbl2 = new JLabel();
+		residentId_lbl2.setText("Enter Resident ID: ");
+		residentId_lbl2.setFont(new Font("Helvetica", Font.BOLD, 18));
+		residentId_lbl2.setForeground(Color.WHITE);
+		residentId_lbl2.setBounds(250, 50, 200, 25);
+		
+		// Icon Properties.
+		ImageIcon deletedResidentInformationIcon = new ImageIcon("img/concepcion uno logo.png");
+		
+		// JFrame Properties.
+		deletedframe = new JFrame();
+		deletedframe.setTitle("Deleted Resident Information");
+		deletedframe.setVisible(true);
+		deletedframe.setResizable(false);
+		deletedframe.setLayout(null);
+		deletedframe.setSize(900, 500);
+		deletedframe.getContentPane().setBackground(new Color(2, 53, 130));
+		deletedframe.setLocationRelativeTo(null);
+		
+		deletedframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		// added components to the JFrame.
+		deletedframe.setIconImage(deletedResidentInformationIcon.getImage());
+		deletedframe.add(residentId_lbl2);
+		
+		// This will set the button to enable after closing this frame.
+		deletedframe.addWindowListener(new WindowAdapter() {
+		
+			public void windowClosed(WindowEvent e) {
+				deletedResidentInformation_btn.setEnabled(true);
+			}
+		});
+		
+	}
 	
 	//
 	// This is ActionPerformed.
@@ -1155,9 +1211,6 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 					batchNumSecondDoseDelete_txtf.setText(myrst.getString(15));
 					vaccinationDateSecondDoseDelete_txtf.setText(myrst.getString(16));
 				}
-				
-				
-				
 			}catch(Exception e2) {
 				JOptionPane.showMessageDialog(null, "Please Enter Resident ID!", "Error!", JOptionPane.ERROR_MESSAGE);
 				searchResidentIDDelete_txtf.setText("");
@@ -1165,6 +1218,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 			}
 		}
 		
+		// This will delete the information of the resident.
 		if(e.getSource() == residentDeletion_btn) {
 			try {	
 			int residentID = Integer.parseInt(searchResidentIDDelete_txtf.getText());
@@ -1195,6 +1249,12 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 				sql.getStackTrace();
 			}
 		}
+		
+		// this will show the deleted Infromation of the Resident and the employee can restore the deleted information.
+		if(e.getSource() == deletedResidentInformation_btn) {
+			deletedResidentInformation();
+			deletedResidentInformation_btn.setEnabled(false);
+		}	
 		
 		// Clearing the TextField in the Resident Registration Jpanel
 		if (e.getSource() == clearButton) {
