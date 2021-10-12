@@ -25,11 +25,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 
@@ -144,6 +146,11 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 	
 	// deleted resident information properties.
 	JFrame deletedframe; 
+	JTextField search_txtf;
+	JButton restore_btn;
+	JTable jtable;
+	DefaultTableModel tableModel;
+	JScrollPane addjtableScroll;
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 																													   //
@@ -825,8 +832,16 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		//
 		jpanelResidentRegistration = new JPanel();
 		jpanelResidentRegistration.setBackground(new Color(2, 53, 130));
-		jpanelResidentRegistration.setPreferredSize(new Dimension(800,1100));
 		jpanelResidentRegistration.setLayout(null);
+		jpanelResidentRegistration.setPreferredSize(new Dimension(800,1100));
+		
+		// Scroll Pane for the Resident Registration.
+		addRessidentScroll = new JScrollPane(jpanelResidentRegistration);
+		addRessidentScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		addRessidentScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		addRessidentScroll.setVisible(true);
+		addRessidentScroll.getVerticalScrollBar().setUnitIncrement(16);
+		addRessidentScroll.setBounds(280, 0, 1003, 680);
 		
 		//
 		// Jpanel for the Deletion of the Residents.
@@ -835,6 +850,14 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		jpanelResidentDeletion.setBackground(new Color(2, 53, 130));
 		jpanelResidentDeletion.setPreferredSize(new Dimension(800,1000));
 		jpanelResidentDeletion.setLayout(null);
+		
+		// Scroll Pane for the Deletion of Resident.
+		deleteResidentScroll = new JScrollPane(jpanelResidentDeletion);
+		deleteResidentScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		deleteResidentScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		deleteResidentScroll.setVisible(true);
+		deleteResidentScroll.getVerticalScrollBar().setUnitIncrement(16);
+		deleteResidentScroll.setBounds(280, 0, 1003, 680);					
 		
 		// The Body Frame of the System.
 		jframe.setIconImage(framelogo.getImage());
@@ -847,21 +870,6 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		jframe.setResizable(false);
 		jframe.setLocationRelativeTo(null);
 		
-		// Scroll Pane for the Deletion of Resident.
-		deleteResidentScroll = new JScrollPane(jpanelResidentDeletion);
-		deleteResidentScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		deleteResidentScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		deleteResidentScroll.setVisible(true);
-		deleteResidentScroll.getVerticalScrollBar().setUnitIncrement(16);
-		deleteResidentScroll.setBounds(280, 0, 1003, 680);
-		
-		// Scroll Pane for the Resident Registration.
-		addRessidentScroll = new JScrollPane(jpanelResidentRegistration);
-		addRessidentScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		addRessidentScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		addRessidentScroll.setVisible(true);
-		addRessidentScroll.getVerticalScrollBar().setUnitIncrement(16);
-		addRessidentScroll.setBounds(280, 0, 1003, 680);
 		
 		// Added Components to the Deletion of Resident Information.
 		jpanelResidentDeletion.add(deletinglabel);
@@ -970,7 +978,69 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		residentId_lbl2.setText("Enter Resident ID: ");
 		residentId_lbl2.setFont(new Font("Helvetica", Font.BOLD, 18));
 		residentId_lbl2.setForeground(Color.WHITE);
-		residentId_lbl2.setBounds(250, 50, 200, 25);
+		residentId_lbl2.setBounds(230, 50, 200, 25);
+		
+		search_txtf = new JTextField();
+		search_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
+		search_txtf.setBounds(395, 47, 130, 30);
+		
+		restore_btn = new JButton();
+		restore_btn.setFocusable(false);
+		restore_btn.setFont(new Font("Helvetica", Font.BOLD, 14));
+		restore_btn.setText("RESTORE");
+		restore_btn.setForeground(Color.BLACK);
+		restore_btn.setBackground(Color.LIGHT_GRAY);
+		restore_btn.addActionListener(this);
+		restore_btn.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		restore_btn.setBounds(540, 47, 100, 30); 
+	
+		tableModel = new DefaultTableModel();
+		tableModel.addColumn("Resident ID");
+		tableModel.addColumn("First Name");
+		tableModel.addColumn("Middle Name");
+		tableModel.addColumn("Last Name");
+		tableModel.addColumn("Suffix");
+		tableModel.addColumn("Phone Number");
+		tableModel.addColumn("Address");
+		tableModel.addColumn("Email Address");
+		tableModel.addColumn("Status");
+		tableModel.addColumn("Gender");
+		tableModel.addColumn("1st Dose Manufacturer Name");
+		tableModel.addColumn("1st Dose BatchNo");
+		tableModel.addColumn("1st Dose Vaccination Date");
+		tableModel.addColumn("2nd Dose Manufacturer Name");
+		tableModel.addColumn("2nd Dose BatchNo");
+		tableModel.addColumn("2nd Dose Vaccination Date");
+		jtable = new JTable(tableModel);
+		jtable.setModel(tableModel);
+		jtable.setEnabled(false);
+		jtable.getColumnModel().getColumn(0).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(1).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(2).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(3).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(4).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(5).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(6).setPreferredWidth(500);
+		jtable.getColumnModel().getColumn(7).setPreferredWidth(250);
+		jtable.getColumnModel().getColumn(8).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(9).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(10).setPreferredWidth(400);
+		jtable.getColumnModel().getColumn(11).setPreferredWidth(400);
+		jtable.getColumnModel().getColumn(12).setPreferredWidth(400);
+		jtable.getColumnModel().getColumn(13).setPreferredWidth(400);
+		jtable.getColumnModel().getColumn(14).setPreferredWidth(400);
+		jtable.getColumnModel().getColumn(15).setPreferredWidth(400);
+		jtable.setAutoResizeMode(0);
+		jtable.setPreferredSize(new Dimension(4750, 1000));
+		jtable.setFillsViewportHeight(true);
+		
+		// Scroll Pane for the Resident Registration.
+		addjtableScroll = new JScrollPane(jtable);
+		addjtableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		addjtableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		addjtableScroll.setVisible(true);
+		addjtableScroll.getVerticalScrollBar().setUnitIncrement(10);
+		addjtableScroll.setBounds(50, 100, 800, 350);
 		
 		// Icon Properties.
 		ImageIcon deletedResidentInformationIcon = new ImageIcon("img/concepcion uno logo.png");
@@ -983,14 +1053,52 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		deletedframe.setLayout(null);
 		deletedframe.setSize(900, 500);
 		deletedframe.getContentPane().setBackground(new Color(2, 53, 130));
-		deletedframe.setLocationRelativeTo(null);
-		
+		deletedframe.setLocationRelativeTo(null);	
 		deletedframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		// added components to the JFrame.
 		deletedframe.setIconImage(deletedResidentInformationIcon.getImage());
 		deletedframe.add(residentId_lbl2);
-		
+		deletedframe.add(search_txtf);
+		deletedframe.add(restore_btn);
+		deletedframe.add(addjtableScroll);
+	
+		// This Will Show the Data Inside the Database.
+				deletedframe.addWindowListener(new WindowAdapter() {
+					
+					public void windowOpened(WindowEvent e) {
+												
+						try {
+							listOfDeletedResident();
+						
+							while(myrst.next()){
+								tableModel.addRow(new Object[] {
+									myrst.getString("resident_id"),
+									myrst.getString("first_name"),
+									myrst.getString("middle_initial"),
+									myrst.getString("last_name"),
+									myrst.getString("suffix"),
+									myrst.getString("phone_number"),
+									myrst.getString("address"),
+									myrst.getString("email_address"),
+									myrst.getString("status"),
+									myrst.getString("gender"),
+									myrst.getString("1stDose_ManufacturerName"),
+									myrst.getString("1stDose_BatchNo"),
+									myrst.getString("1stDose_VaccinationDate"),
+									myrst.getString("2ndDose_ManufacturerName"),
+									myrst.getString("2ndDose_BatchNo"),
+									myrst.getString("2ndDose_VaccinationDate")
+								});
+								
+							}
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				});
+				
 		// This will set the button to enable after closing this frame.
 		deletedframe.addWindowListener(new WindowAdapter() {
 		
@@ -1255,6 +1363,25 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 			deletedResidentInformation();
 			deletedResidentInformation_btn.setEnabled(false);
 		}	
+		// This will Restore the deleted informationa of the resident
+		if(e.getSource() == restore_btn) {
+			try {
+				int id = Integer.parseInt(search_txtf.getText());
+				restoreDeletedResident(id);
+				
+				if(getResidentRestored() >= 1) {
+					JOptionPane.showMessageDialog(null, "Resident Data is Restored Successfully", "Restored Succesfuly", JOptionPane.INFORMATION_MESSAGE);
+					search_txtf.setText("");
+				}else {
+					JOptionPane.showMessageDialog(null, "Failed, Please Check the Resident ID!", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			} catch (NumberFormatException e2) {
+				JOptionPane.showMessageDialog(null, "Failed, Please Check the Resident ID!", "Error!", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}
 		
 		// Clearing the TextField in the Resident Registration Jpanel
 		if (e.getSource() == clearButton) {
