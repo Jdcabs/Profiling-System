@@ -35,6 +35,7 @@ public class JDBC_Connector {
 	private String gender_Resident;
 	private int residentDeleted;
 	private int residentAdded;
+	private int residentRestored;
 	private String firstDose_ManufacturerName;
 	private String firstDose_BatchNumber;
 	private String secondDose_ManufacturerName;
@@ -55,6 +56,7 @@ public class JDBC_Connector {
 	public String getGender_Resident() { return gender_Resident;}
 	public int getResidentAdded() {return residentAdded;} 
 	public int getResidentDeleted() {return residentDeleted;}
+	public int getResidentRestored() {return residentRestored;}
 	public String getFirstDoseManufacturerName() { return firstDose_ManufacturerName; }
 	public String getFirstDoseBatchNumber() { return firstDose_BatchNumber; }
 	public String getFirstDose_VaccinationDate() { return firstDose_VaccinationDate;}
@@ -62,8 +64,9 @@ public class JDBC_Connector {
 	public String getSecondDoseBatchNumber() {return secondDose_BatchNumber; }
 	public String getSecondDoseVaccinationDate() {return secondDose_VaccinationDate;}
 	
-	public int setResidentAdded(int residentAdded) {return this.residentAdded = residentAdded;}
-	public int setResidentDeleted(int residentDeleted) {return this.residentDeleted = residentDeleted;}
+	public void setResidentRestored(int residentRestored) { this.residentRestored = residentRestored; }
+	public void setResidentAdded(int residentAdded) { this.residentAdded = residentAdded;}
+	public void setResidentDeleted(int residentDeleted) { this.residentDeleted = residentDeleted;}
 	
 	public void setResident_id(long resident_id) {this.resident_id = resident_id;}
 	public void setFirst_name_Resident(String first_name_Resident) {this.first_name_Resident = first_name_Resident;}
@@ -105,18 +108,13 @@ public class JDBC_Connector {
 	public void setPhone_number(String phone_number) {this.phone_number_Employee = phone_number;}
 	public int setLogin(int login) { return this.login = login;}
 
-
+	// Empty Concstructor.
 	public JDBC_Connector() {
-
 		try {
-			myCon = DriverManager.getConnection(connection, username, password);
-			
-			myCon.setAutoCommit(false);
-			
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null,  " No Database Connected", "database connector error!",
-					JOptionPane.INFORMATION_MESSAGE);
-			e.printStackTrace();
+		myCon = DriverManager.getConnection(connection, username, password);
+		myCon.setAutoCommit(false);
+		}catch(Exception e) {
+			e.getStackTrace();
 		}
 	}
 
@@ -124,7 +122,6 @@ public class JDBC_Connector {
 	public void employeeLogin(String user_name, String user_password) {
 		setUser_name(user_name); 
 		setUser_password(user_password); 
-			
 		try { 
 			
 			myStmnt = myCon.prepareStatement("select * from employee where username = ? and password = ?");
@@ -135,19 +132,15 @@ public class JDBC_Connector {
 			myrst = myStmnt.executeQuery();
 			
 			myCon.commit();
-			
 		} catch (SQLException e) {
-			 
 			e.printStackTrace();
 		}
 	}
 	
 	// Here is were the Employee Details will show up
 	public void getResidentDetails(int resident_Id) {
-		
-		setResident_id(resident_Id);
-
 		try {
+			setResident_id(resident_Id);
 			myStmnt = myCon.prepareStatement("select * from resident where deleted = 0 and resident_id = ?");
 
 			myStmnt.setLong(1, getResident_id());
@@ -161,10 +154,12 @@ public class JDBC_Connector {
 	}
 	
 	public void deleteResidentInformation(int resident_ID) {
-		
+		try {
 		setResident_id(resident_ID);
 		
-		try {
+		myCon = DriverManager.getConnection(connection, username, password);
+		myCon.setAutoCommit(false);
+		
 		myStmnt = myCon.prepareStatement("UPDATE resident SET deleted = 1 where resident_id = ?");
 		
 		myStmnt.setLong(1, getResident_id());
@@ -218,6 +213,10 @@ public class JDBC_Connector {
 		
 		try {
 		
+			myCon = DriverManager.getConnection(connection, username, password);
+			
+			myCon.setAutoCommit(false);
+			
 		myStmnt = myCon.prepareStatement("insert into resident " +
 										 "(resident_id, first_name, middle_initial, last_name, suffix, phone_number, address, email_address, status, gender, 1stDose_manufacturerName, 1stDose_BatchNo, 1stDose_VaccinationDate, 2ndDose_ManufacturerName, 2ndDose_batchNo, 2ndDose_VaccinationDate)" +
 										 " values " + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -263,6 +262,46 @@ public class JDBC_Connector {
 			}
 		}
 		return numbers;
+	}
+	
+	// This will Show the deleted information of the resident
+	public void listOfDeletedResident() {
+		try {
+			
+		myCon = DriverManager.getConnection(connection, username, password);	
+		myCon.setAutoCommit(false);	
+		
+		myStmnt = myCon.prepareStatement("select * from resident where deleted = 1");
+
+		myrst = myStmnt.executeQuery();
+		
+		myCon.commit();
+		}catch(SQLException sql) {
+			sql.getStackTrace();
+		}
+	}
+	
+	// This will Restore the Deleted Resident
+	public void restoreDeletedResident(int residentID) {
+		try {
+			setResident_id(residentID);
+			
+			myCon = DriverManager.getConnection(connection, username, password);
+			myCon.setAutoCommit(false);
+			
+			myStmnt = myCon.prepareStatement("UPDATE resident SET deleted = 0 where resident_id = ?");
+			
+			myStmnt.setLong(1, getResident_id());
+			
+			int restore = myStmnt.executeUpdate();
+			
+			setResidentRestored(restore);
+			
+			myCon.commit();
+		} catch (Exception e){
+			e.getStackTrace();
+		}
+		
 	}
 	
 	// this will check if the date format inputted is correct or not. if not? it will throw an Exception.
