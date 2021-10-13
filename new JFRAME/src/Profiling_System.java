@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -35,7 +34,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 
-public class Profiling_System extends JDBC_Connector implements ActionListener{
+public class Profiling_System extends JDBC_Connector implements ActionListener {
 
 	// Login JFrame Properties and Fields.
 	JFrame LoginFrame = new JFrame();
@@ -45,17 +44,17 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 	JPasswordField userpassword;
 	JOptionPane loginPane;
 
-	// Home page Jframe properties and fields
+	// Side Menu Bar Properties and Fields
 	JFrame jframe = new JFrame();
 	JButton logoutButton = new JButton("Logout");
 	ImageIcon framelogo = new ImageIcon("img/concepcion uno logo.png");
 	JButton addResident = new JButton();
 	JButton deleteResident = new JButton();
+	JButton residentList = new JButton();
 	ArrayList list;
-	
-	
+
 	// Frame Properties
-			
+
 	// Adding of Resident Properties.
 	// Vaccination Information of the Resident.
 	JLabel lblVaccinationInfomation;
@@ -71,11 +70,11 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 	JLabel vaccinationDateSecondDose_lbl;
 	JTextField manufacturerNameSecondDose_txtf;
 	JTextField batchNumSecondDose_txtf;
-	JFormattedTextField vaccinationDateSecondDose_txtf;	
+	JFormattedTextField vaccinationDateSecondDose_txtf;
 	JRadioButton yes_rb;
 	JRadioButton no_rb;
 	ButtonGroup vaccineButtonGroup;
-	
+
 	// Information of the Resident.
 	JLabel emailAdd_lbl;
 	JLabel randomId_lbl;
@@ -97,13 +96,13 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 	JTextField address_txtf;
 	JTextField phoneNumber_txtf;
 	JComboBox status_txtb;
-	
+
 	JButton addButton;
 	JButton clearButton;
 	JButton generateRandomId;
-	JScrollPane addRessidentScroll;
+	JScrollPane addResidentScroll;
 	JPanel jpanelResidentRegistration;
-	
+
 	// Deletion of the Resident Properties.
 	JScrollPane deleteResidentScroll;
 	JPanel jpanelResidentDeletion;
@@ -127,7 +126,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 	JTextField addressDelete_txtf;
 	JTextField statusDelete_txtf;
 	JTextField genderDelete_txtf;
-	
+
 	// Vaccine Information.
 	JLabel manufacturerNameFirstDoseDelete_lbl;
 	JLabel batchNumFirstDoseDelete_lbl;
@@ -143,22 +142,28 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 	JTextField vaccinationDateSecondDoseDelete_txtf;
 	JButton residentDeletion_btn;
 	JButton deletedResidentInformation_btn;
-	
+
 	// deleted resident information properties.
-	JFrame deletedframe; 
+	JFrame deletedframe;
 	JTextField search_txtf;
 	JButton restore_btn;
 	JTable jtable;
 	DefaultTableModel tableModel;
 	JScrollPane addjtableScroll;
 	
+	// List of Resident Information properties.
+	JPanel jpanelResidentList;
+	JLabel residentList_lbl;
+	JScrollPane residentListScroll;
+	DefaultTableModel listTableModel;
+	JTable listJtable;
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 																													   //
-	//			 LOGIN PAGE OF THE PROFILING SYSTTEM.                                                                      //
-	// 																													   //
+	// //
+	// LOGIN PAGE OF THE PROFILING SYSTTEM. //
+	// //
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
+
 	public Profiling_System() {
 
 		// Login Textfields.
@@ -250,9 +255,9 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//                                                                                                                     //
-	//                           HOHE PAGE OF RESIDENT REGISTRATION PROFILING SYSTTEM.                                     //
-	//                                                                                                                     //
+	// //
+	// HOHE PAGE OF RESIDENT REGISTRATION PROFILING SYSTTEM. //
+	// //
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public void residentRegistrationPage() {
@@ -260,7 +265,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		// Jpanel for the body of the frame, here we can see the changing of properties
 		// depends on the button clicked in the sidebar menu.
 		// Component inside the Body of the frame.
-		
+
 		//
 		// Properties inside the Adding Resident Information Registration Jpanel.
 		// Vaccination Information.
@@ -270,13 +275,13 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		lblVaccinationInfomation.setForeground(Color.WHITE);
 		lblVaccinationInfomation.setFont(new Font("Helvetica", Font.BOLD, 35));
 		lblVaccinationInfomation.setBounds(35, 500, 400, 50);
-		
+
 		vaccineQuestion = new JLabel();
 		vaccineQuestion.setText("Does the Resident is Already Vaccinated ?");
 		vaccineQuestion.setForeground(Color.WHITE);
 		vaccineQuestion.setFont(new Font("Helvetica", Font.BOLD, 18));
 		vaccineQuestion.setBounds(35, 570, 380, 25);
-		
+
 		yes_rb = new JRadioButton();
 		yes_rb.setText("Yes");
 		yes_rb.setFocusable(false);
@@ -285,7 +290,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		yes_rb.setFont(new Font("Helvetica", Font.BOLD, 15));
 		yes_rb.setBounds(35, 600, 70, 25);
 		yes_rb.addActionListener(this);
-		
+
 		no_rb = new JRadioButton();
 		no_rb.setText("No");
 		no_rb.setFocusable(false);
@@ -294,91 +299,91 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		no_rb.setFont(new Font("Helvetica", Font.BOLD, 15));
 		no_rb.setBounds(110, 600, 50, 25);
 		no_rb.addActionListener(this);
-		
+
 		vaccineButtonGroup = new ButtonGroup();
 		vaccineButtonGroup.add(yes_rb);
 		vaccineButtonGroup.add(no_rb);
-		
+
 		JLabel firstDose_lbl = new JLabel();
 		firstDose_lbl.setText("First Dose of Vaccine");
 		firstDose_lbl.setFont(new Font("Helvetica", Font.BOLD, 25));
 		firstDose_lbl.setForeground(Color.WHITE);
 		firstDose_lbl.setBounds(35, 660, 300, 25);
-		
+
 		manufacturerNameFirstDose_lbl = new JLabel();
 		manufacturerNameFirstDose_lbl.setText("Manufacturer Name: ");
 		manufacturerNameFirstDose_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		manufacturerNameFirstDose_lbl.setForeground(Color.WHITE);
 		manufacturerNameFirstDose_lbl.setBounds(35, 700, 200, 25);
-		
+
 		manufacturerNameFirstDose_txtf = new JTextField();
 		manufacturerNameFirstDose_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		manufacturerNameFirstDose_txtf.setBounds(35, 725, 320, 30);
 		manufacturerNameFirstDose_txtf.setEditable(false);
-		
+
 		batchNumFirstDose_lbl = new JLabel();
 		batchNumFirstDose_lbl.setText("Batch Number: ");
 		batchNumFirstDose_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		batchNumFirstDose_lbl.setForeground(Color.WHITE);
 		batchNumFirstDose_lbl.setBounds(390, 700, 200, 25);
-		
+
 		batchNumFirstDose_txtf = new JTextField();
 		batchNumFirstDose_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		batchNumFirstDose_txtf.setBounds(390, 725, 205, 30);
 		batchNumFirstDose_txtf.setEditable(false);
-		
+
 		vaccinationDateFirstDose_lbl = new JLabel();
 		vaccinationDateFirstDose_lbl.setText("Vaccination Date: ");
 		vaccinationDateFirstDose_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		vaccinationDateFirstDose_lbl.setForeground(Color.WHITE);
 		vaccinationDateFirstDose_lbl.setBounds(630, 700, 200, 25);
-	
+
 		vaccinationDateFirstDose_txtf = new JFormattedTextField();
 		vaccinationDateFirstDose_txtf.setEditable(false);
 		vaccinationDateFirstDose_txtf.setText("YYYY/MM/DD");
 		vaccinationDateFirstDose_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		vaccinationDateFirstDose_txtf.setBounds(630, 725, 205, 30);
-		
+
 		JLabel secondDose_lbl = new JLabel();
 		secondDose_lbl.setText("Second Dose of Vaccine");
 		secondDose_lbl.setFont(new Font("Helvetica", Font.BOLD, 25));
 		secondDose_lbl.setForeground(Color.WHITE);
 		secondDose_lbl.setBounds(35, 800, 300, 25);
-		
+
 		manufacturerNameSecondDose_lbl = new JLabel();
 		manufacturerNameSecondDose_lbl.setText("Manufacturer Name: ");
 		manufacturerNameSecondDose_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		manufacturerNameSecondDose_lbl.setForeground(Color.WHITE);
 		manufacturerNameSecondDose_lbl.setBounds(35, 840, 200, 25);
-		
-		manufacturerNameSecondDose_txtf = new JTextField(); 
+
+		manufacturerNameSecondDose_txtf = new JTextField();
 		manufacturerNameSecondDose_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		manufacturerNameSecondDose_txtf.setBounds(35, 865, 320, 30);
 		manufacturerNameSecondDose_txtf.setEditable(false);
-		
+
 		batchNumSecondDose_lbl = new JLabel();
 		batchNumSecondDose_lbl.setText("Batch Number: ");
 		batchNumSecondDose_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		batchNumSecondDose_lbl.setForeground(Color.WHITE);
 		batchNumSecondDose_lbl.setBounds(390, 840, 200, 25);
-		
+
 		batchNumSecondDose_txtf = new JTextField();
 		batchNumSecondDose_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		batchNumSecondDose_txtf.setBounds(390, 865, 205, 30);
 		batchNumSecondDose_txtf.setEditable(false);
-		
-		vaccinationDateSecondDose_lbl  = new JLabel();
+
+		vaccinationDateSecondDose_lbl = new JLabel();
 		vaccinationDateSecondDose_lbl.setText("Vaccination Date: ");
 		vaccinationDateSecondDose_lbl.setForeground(Color.WHITE);
 		vaccinationDateSecondDose_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		vaccinationDateSecondDose_lbl.setBounds(630, 840, 200, 25);
-		
+
 		vaccinationDateSecondDose_txtf = new JFormattedTextField();
 		vaccinationDateSecondDose_txtf.setEditable(false);
 		vaccinationDateSecondDose_txtf.setText("YYYY/MM/DD");
 		vaccinationDateSecondDose_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		vaccinationDateSecondDose_txtf.setBounds(630, 865, 205, 30);
-		
+
 		//
 		// Properties inside the Resident Information Registration Jpanel.
 		//
@@ -401,18 +406,17 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		addButton.setBackground(Color.GREEN);
 		addButton.addActionListener(this);
 		addButton.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		
+
 		gender_lbl = new JLabel();
 		gender_lbl.setText("Gender: ");
 		gender_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		gender_lbl.setForeground(Color.WHITE);
 		gender_lbl.setBounds(750, 350, 200, 25);
-		
+
 		String[] genderSelection = { "Male", "Female" };
 		gender_txtb = new JComboBox(genderSelection);
 		gender_txtb.setBounds(750, 375, 150, 30);
-		
-		
+
 		generateRandomId = new JButton();
 		generateRandomId.setText("Generate ID");
 		generateRandomId.setFocusable(false);
@@ -515,22 +519,22 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		registerlabel.setForeground(Color.WHITE);
 		registerlabel.setFont(new Font("Helvetica", Font.BOLD, 35));
 		registerlabel.setBounds(35, 50, 350, 45);
-		
 
 		//
-		// Properties inside the Deleting Resident Information Registration Jpanel.
+		// Deletion of Resident Information Properties.
 		//
 		// Basic Resident Information.
+		
 		JLabel deletinglabel = new JLabel("Delete Resident Information");
 		deletinglabel.setForeground(Color.WHITE);
 		deletinglabel.setFont(new Font("Helvetica", Font.BOLD, 35));
 		deletinglabel.setBounds(35, 50, 500, 45);
-		
+
 		JLabel searchResidentID = new JLabel("Search for Resident ID: ");
 		searchResidentID.setForeground(Color.WHITE);
 		searchResidentID.setFont(new Font("Helvetica", Font.BOLD, 18));
 		searchResidentID.setBounds(220, 130, 250, 25);
-		
+
 		searchResidentIDDelete_txtf = new JTextField();
 		searchResidentIDDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		searchResidentIDDelete_txtf.setBounds(430, 128, 150, 30);
@@ -543,192 +547,192 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		searchResidentID_btn.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		searchResidentID_btn.setBounds(600, 128, 110, 30);
 		searchResidentID_btn.addActionListener(this);
-		
+
 		firstNameDelete_lbl = new JLabel();
 		firstNameDelete_lbl.setText("First Name: ");
 		firstNameDelete_lbl.setForeground(Color.WHITE);
 		firstNameDelete_lbl.setBounds(35, 200, 200, 25);
 		firstNameDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
-		
+
 		firstNameDelete_txtf = new JTextField();
 		firstNameDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		firstNameDelete_txtf.setEditable(false);
 		firstNameDelete_txtf.setBounds(35, 225, 260, 30);
-		
+
 		middleNameDelete_lbl = new JLabel();
 		middleNameDelete_lbl.setText("Middle Name: ");
 		middleNameDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		middleNameDelete_lbl.setForeground(Color.WHITE);
 		middleNameDelete_lbl.setBounds(35, 280, 200, 25);
-		
-		middleNameDelete_txtf = new JTextField();	
+
+		middleNameDelete_txtf = new JTextField();
 		middleNameDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		middleNameDelete_txtf.setEditable(false);
 		middleNameDelete_txtf.setBounds(35, 305, 260, 30);
-		
+
 		lastNameDelete_lbl = new JLabel();
 		lastNameDelete_lbl.setText("Last Name: ");
 		lastNameDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		lastNameDelete_lbl.setForeground(Color.WHITE);
 		lastNameDelete_lbl.setBounds(35, 360, 200, 25);
-		
+
 		lastNameDelete_txtf = new JTextField();
 		lastNameDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		lastNameDelete_txtf.setEditable(false);
 		lastNameDelete_txtf.setBounds(35, 385, 260, 30);
-		
+
 		suffixDelete_lbl = new JLabel();
 		suffixDelete_lbl.setText("Suffix: ");
 		suffixDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		suffixDelete_lbl.setForeground(Color.WHITE);
 		suffixDelete_lbl.setBounds(35, 440, 200, 25);
-		
+
 		suffixDelete_txtf = new JTextField();
 		suffixDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		suffixDelete_txtf.setEditable(false);
 		suffixDelete_txtf.setBounds(35, 465, 60, 30);
-		
+
 		phoneNumberDelete_lbl = new JLabel();
 		phoneNumberDelete_lbl.setText("Phone Number: ");
 		phoneNumberDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		phoneNumberDelete_lbl.setForeground(Color.WHITE);
 		phoneNumberDelete_lbl.setBounds(380, 200, 200, 25);
-		
+
 		phoneNumberDelete_txtf = new JTextField();
 		phoneNumberDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		phoneNumberDelete_txtf.setEditable(false);
 		phoneNumberDelete_txtf.setBounds(380, 225, 320, 30);
-		
+
 		emailAddressDelete_lbl = new JLabel();
 		emailAddressDelete_lbl.setForeground(Color.WHITE);
 		emailAddressDelete_lbl.setText("Email Address: ");
 		emailAddressDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		emailAddressDelete_lbl.setBounds(380, 280, 200, 25);
-		
+
 		emailAddressDelete_txtf = new JTextField();
 		emailAddressDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		emailAddressDelete_txtf.setEditable(false);
 		emailAddressDelete_txtf.setBounds(380, 305, 350, 30);
-		
+
 		addressDelete_lbl = new JLabel();
 		addressDelete_lbl.setText("Address: ");
 		addressDelete_lbl.setForeground(Color.WHITE);
 		addressDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		addressDelete_lbl.setBounds(380, 355, 200, 25);
-		
+
 		addressDelete_txtf = new JTextField();
 		addressDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 17));
 		addressDelete_txtf.setEditable(false);
 		addressDelete_txtf.setBounds(380, 380, 480, 30);
-		
+
 		statusDelete_lbl = new JLabel();
 		statusDelete_lbl.setText("Status: ");
 		statusDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		statusDelete_lbl.setForeground(Color.WHITE);
 		statusDelete_lbl.setBounds(150, 440, 100, 25);
-		
+
 		statusDelete_txtf = new JTextField();
 		statusDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		statusDelete_txtf.setEditable(false);
 		statusDelete_txtf.setBounds(150, 465, 120, 30);
-		
+
 		genderDelete_lbl = new JLabel();
 		genderDelete_lbl.setText("Gender: ");
 		genderDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		genderDelete_lbl.setForeground(Color.WHITE);
 		genderDelete_lbl.setBounds(320, 440, 150, 25);
-		
+
 		genderDelete_txtf = new JTextField();
-		genderDelete_txtf.setFont(new Font("Helvetica", Font.BOLD,20));
+		genderDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		genderDelete_txtf.setEditable(false);
 		genderDelete_txtf.setBounds(320, 465, 200, 30);
-		
+
 		// Resident Vaccination Information.
-		
+
 		JLabel vaccineInformationDelete_lbl = new JLabel();
 		vaccineInformationDelete_lbl.setText("Vaccine Information");
 		vaccineInformationDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 35));
 		vaccineInformationDelete_lbl.setForeground(Color.WHITE);
 		vaccineInformationDelete_lbl.setBounds(35, 560, 400, 35);
-		
+
 		JLabel firstDoseDelete_lbl = new JLabel();
 		firstDoseDelete_lbl.setText("First Dose of Vaccine");
 		firstDoseDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 25));
 		firstDoseDelete_lbl.setForeground(Color.WHITE);
 		firstDoseDelete_lbl.setBounds(35, 625, 300, 25);
-		
+
 		manufacturerNameFirstDoseDelete_lbl = new JLabel();
 		manufacturerNameFirstDoseDelete_lbl.setText("Manufacturer Name: ");
 		manufacturerNameFirstDoseDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		manufacturerNameFirstDoseDelete_lbl.setForeground(Color.WHITE);
 		manufacturerNameFirstDoseDelete_lbl.setBounds(35, 665, 205, 25);
-		
+
 		manufacturerNameFirstDoseDelete_txtf = new JTextField();
 		manufacturerNameFirstDoseDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		manufacturerNameFirstDoseDelete_txtf.setEditable(false);
 		manufacturerNameFirstDoseDelete_txtf.setBounds(35, 690, 320, 30);
-		
+
 		batchNumFirstDoseDelete_lbl = new JLabel();
 		batchNumFirstDoseDelete_lbl.setText("Batch Number: ");
 		batchNumFirstDoseDelete_lbl.setForeground(Color.WHITE);
 		batchNumFirstDoseDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		batchNumFirstDoseDelete_lbl.setBounds(410, 665, 205, 25);
-		
+
 		batchNumFirstDoseDelete_txtf = new JTextField();
 		batchNumFirstDoseDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		batchNumFirstDoseDelete_txtf.setEditable(false);
 		batchNumFirstDoseDelete_txtf.setBounds(410, 690, 250, 30);
-		
+
 		vaccinationDateFirstDoseDelete_lbl = new JLabel();
 		vaccinationDateFirstDoseDelete_lbl.setText("Vaccination Date: (YYYY-MM-DD)");
 		vaccinationDateFirstDoseDelete_lbl.setForeground(Color.WHITE);
 		vaccinationDateFirstDoseDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 15));
 		vaccinationDateFirstDoseDelete_lbl.setBounds(715, 665, 300, 25);
-		
+
 		vaccinationDateFirstDoseDelete_txtf = new JTextField();
 		vaccinationDateFirstDoseDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		vaccinationDateFirstDoseDelete_txtf.setEditable(false);
 		vaccinationDateFirstDoseDelete_txtf.setBounds(715, 690, 200, 30);
-		
+
 		JLabel secondDoseDelete_lbl = new JLabel();
 		secondDoseDelete_lbl.setText("First Dose of Vaccine");
 		secondDoseDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 25));
 		secondDoseDelete_lbl.setForeground(Color.WHITE);
 		secondDoseDelete_lbl.setBounds(35, 760, 300, 25);
-		
+
 		manufacturerNameSecondDoseDelete_lbl = new JLabel();
 		manufacturerNameSecondDoseDelete_lbl.setText("Manufacturer Name: ");
 		manufacturerNameSecondDoseDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		manufacturerNameSecondDoseDelete_lbl.setForeground(Color.WHITE);
 		manufacturerNameSecondDoseDelete_lbl.setBounds(35, 800, 205, 25);
-		
+
 		manufacturerNameSecondDoseDelete_txtf = new JTextField();
 		manufacturerNameSecondDoseDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		manufacturerNameSecondDoseDelete_txtf.setEditable(false);
 		manufacturerNameSecondDoseDelete_txtf.setBounds(35, 825, 320, 30);
-		
+
 		batchNumSecondDoseDelete_lbl = new JLabel();
 		batchNumSecondDoseDelete_lbl.setText("Batch Number: ");
 		batchNumSecondDoseDelete_lbl.setForeground(Color.WHITE);
 		batchNumSecondDoseDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
 		batchNumSecondDoseDelete_lbl.setBounds(410, 800, 205, 25);
-		
+
 		batchNumSecondDoseDelete_txtf = new JTextField();
 		batchNumSecondDoseDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		batchNumSecondDoseDelete_txtf.setEditable(false);
 		batchNumSecondDoseDelete_txtf.setBounds(410, 825, 250, 30);
-		
+
 		vaccinationDateSecondDoseDelete_lbl = new JLabel();
 		vaccinationDateSecondDoseDelete_lbl.setText("Vaccination Date: (YYYY-MM-DD)");
 		vaccinationDateSecondDoseDelete_lbl.setFont(new Font("Helvetica", Font.BOLD, 15));
 		vaccinationDateSecondDoseDelete_lbl.setForeground(Color.WHITE);
 		vaccinationDateSecondDoseDelete_lbl.setBounds(715, 800, 300, 25);
-		
+
 		vaccinationDateSecondDoseDelete_txtf = new JTextField();
 		vaccinationDateSecondDoseDelete_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		vaccinationDateSecondDoseDelete_txtf.setEditable(false);
 		vaccinationDateSecondDoseDelete_txtf.setBounds(715, 825, 200, 30);
-		
+
 		residentDeletion_btn = new JButton();
 		residentDeletion_btn.setText("Delete Resident Information");
 		residentDeletion_btn.setFont(new Font("Helvetica", Font.BOLD, 14));
@@ -738,8 +742,8 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		residentDeletion_btn.setBackground(Color.RED);
 		residentDeletion_btn.addActionListener(this);
 		residentDeletion_btn.setBounds(250, 920, 250, 40);
-		residentDeletion_btn.setBorder(BorderFactory.createRaisedSoftBevelBorder());	
-		
+		residentDeletion_btn.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+
 		deletedResidentInformation_btn = new JButton();
 		deletedResidentInformation_btn.setFocusable(false);
 		deletedResidentInformation_btn.setFont(new Font("Helvetica", Font.BOLD, 14));
@@ -749,6 +753,62 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		deletedResidentInformation_btn.addActionListener(this);
 		deletedResidentInformation_btn.setBounds(540, 920, 250, 40);
 		deletedResidentInformation_btn.setText("Deleted Resident Infromation");
+
+		//
+		// List of Resident Properties.
+		//
+		
+		residentList_lbl = new JLabel();
+		residentList_lbl.setText("List of Resident");
+		residentList_lbl.setFont(new Font("Helvetica", Font.BOLD, 35));
+		residentList_lbl.setForeground(Color.WHITE);
+		residentList_lbl.setBounds(35, 50, 500, 45);
+		
+		listTableModel = new DefaultTableModel();
+		listTableModel.addColumn("Resident ID");
+		listTableModel.addColumn("First Name");
+		listTableModel.addColumn("Middle Name");
+		listTableModel.addColumn("Last Name");
+		listTableModel.addColumn("Suffix");
+		listTableModel.addColumn("Phone Number");
+		listTableModel.addColumn("Address");
+		listTableModel.addColumn("Email Address");
+		listTableModel.addColumn("Status");
+		listTableModel.addColumn("Gender");
+		listTableModel.addColumn("1st Dose Manufacturer Name");
+		listTableModel.addColumn("1st Dose BatchNo");
+		listTableModel.addColumn("1st Dose Vaccination Date");
+		listTableModel.addColumn("2nd Dose Manufacturer Name");
+		listTableModel.addColumn("2nd Dose BatchNo");
+		listTableModel.addColumn("2nd Dose Vaccination Date");
+		
+		listJtable = new JTable(listTableModel);
+		listJtable.setModel(listTableModel);
+		listJtable.setEnabled(false);
+		listJtable.getColumnModel().getColumn(0).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(1).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(2).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(3).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(4).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(5).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(6).setPreferredWidth(500);
+		listJtable.getColumnModel().getColumn(7).setPreferredWidth(250);
+		listJtable.getColumnModel().getColumn(8).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(9).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(10).setPreferredWidth(400);
+		listJtable.getColumnModel().getColumn(11).setPreferredWidth(400);
+		listJtable.getColumnModel().getColumn(12).setPreferredWidth(400);
+		listJtable.getColumnModel().getColumn(13).setPreferredWidth(400);
+		listJtable.getColumnModel().getColumn(14).setPreferredWidth(400);
+		listJtable.getColumnModel().getColumn(15).setPreferredWidth(400);
+		listJtable.setAutoResizeMode(0);
+		listJtable.setPreferredSize(new Dimension(4750, 1000));
+		listJtable.setFillsViewportHeight(true);
+		
+		residentListScroll = new JScrollPane(listJtable);
+		residentListScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		residentListScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		residentListScroll.setBounds(35, 100, 910, 500);
 		
 		//
 		// Component inside the Side MenuBar.
@@ -767,7 +827,8 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		labelHomePage.setHorizontalAlignment(SwingConstants.CENTER);
 		labelHomePage.setIconTextGap(10);
 		labelHomePage.setBounds(5, 0, 260, 230);
-
+		
+		// Side Menu Bar
 		// Button for the ADDING or Registering a Residents.
 		ImageIcon addResidentImage = new ImageIcon(
 				new ImageIcon("img/add user icon.png").getImage().getScaledInstance(55, 65, Image.SCALE_SMOOTH));
@@ -787,7 +848,8 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		addResident.addActionListener(this);
 		addResident.setBackground(Color.GREEN);
 		addResident.setForeground(Color.WHITE);
-
+		
+		// Side Menu Bar
 		// Button for the DELETING or Removing a Residents.
 		ImageIcon deleteResidentImage = new ImageIcon(
 				new ImageIcon("img/Delete user icon.png").getImage().getScaledInstance(50, 60, Image.SCALE_SMOOTH));
@@ -807,8 +869,29 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		deleteResident.setBackground(Color.RED);
 		deleteResident.setForeground(Color.WHITE);
 		deleteResident.addActionListener(this);
-
-		// JPanel of the side menu bar.
+		
+		// Side Menu Bar
+		// Button for the LIST of Resident.
+		ImageIcon residentListImage = new ImageIcon(
+				new ImageIcon("img/Resident List Icon.png").getImage().getScaledInstance(45, 55, Image.SCALE_SMOOTH));
+		
+		residentList.setText("LIST OF RESIDENT");
+		residentList.setIcon(residentListImage);
+		residentList.setBounds(1, 360, 278, 70);
+		residentList.setFont(new Font("Helvetica", Font.BOLD, 18));
+		residentList.setVerticalTextPosition(SwingConstants.CENTER);
+		residentList.setHorizontalTextPosition(SwingConstants.LEFT);
+		residentList.setVerticalAlignment(SwingConstants.CENTER);
+		residentList.setHorizontalAlignment(SwingConstants.RIGHT);
+		residentList.setFocusable(false);
+		residentList.setBorderPainted(false);
+		residentList.setContentAreaFilled(true);
+		residentList.setOpaque(true);
+		residentList.setForeground(Color.WHITE);
+		residentList.setBackground(Color.LIGHT_GRAY);
+		residentList.addActionListener(this);
+		
+		// JPanel of the Side Menu Bar
 		Border backlineforSideMenu = BorderFactory.createLineBorder(Color.BLACK);
 		JPanel sideMenuBar = new JPanel();
 		sideMenuBar.setBackground(Color.WHITE);
@@ -826,38 +909,46 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		logoutButton.setOpaque(false);
 		logoutButton.setContentAreaFilled(false);
 		logoutButton.setBorderPainted(false);
-		
+
 		//
-		// JPanel for the Registration of the Residents.
+		// Registration of Resident Information Jpanel
 		//
 		jpanelResidentRegistration = new JPanel();
 		jpanelResidentRegistration.setBackground(new Color(2, 53, 130));
 		jpanelResidentRegistration.setLayout(null);
-		jpanelResidentRegistration.setPreferredSize(new Dimension(800,1100));
-		
+		jpanelResidentRegistration.setPreferredSize(new Dimension(800, 1100));
+
 		// Scroll Pane for the Resident Registration.
-		addRessidentScroll = new JScrollPane(jpanelResidentRegistration);
-		addRessidentScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		addRessidentScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		addRessidentScroll.setVisible(true);
-		addRessidentScroll.getVerticalScrollBar().setUnitIncrement(16);
-		addRessidentScroll.setBounds(280, 0, 1003, 680);
-		
+		addResidentScroll = new JScrollPane(jpanelResidentRegistration);
+		addResidentScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		addResidentScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		addResidentScroll.setVisible(true);
+		addResidentScroll.getVerticalScrollBar().setUnitIncrement(16);
+		addResidentScroll.setBounds(280, 0, 1003, 680);
+
 		//
-		// Jpanel for the Deletion of the Residents.
+		// Deletion of Resident Jpanel
 		//
 		jpanelResidentDeletion = new JPanel();
 		jpanelResidentDeletion.setBackground(new Color(2, 53, 130));
-		jpanelResidentDeletion.setPreferredSize(new Dimension(800,1000));
+		jpanelResidentDeletion.setPreferredSize(new Dimension(800, 1000));
 		jpanelResidentDeletion.setLayout(null);
-		
+
 		// Scroll Pane for the Deletion of Resident.
 		deleteResidentScroll = new JScrollPane(jpanelResidentDeletion);
 		deleteResidentScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		deleteResidentScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		deleteResidentScroll.setVisible(true);
 		deleteResidentScroll.getVerticalScrollBar().setUnitIncrement(16);
-		deleteResidentScroll.setBounds(280, 0, 1003, 680);					
+		deleteResidentScroll.setBounds(280, 0, 1003, 680);
+		
+		//
+		// List of Resident Jpanel
+		//
+		jpanelResidentList = new JPanel();
+		jpanelResidentList.setBackground(new Color(2, 53, 130));
+		jpanelResidentList.setLayout(null);
+		jpanelResidentList.setBounds(280, 0, 1003, 680);
 		
 		// The Body Frame of the System.
 		jframe.setIconImage(framelogo.getImage());
@@ -869,8 +960,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		jframe.setLayout(null);
 		jframe.setResizable(false);
 		jframe.setLocationRelativeTo(null);
-		
-		
+
 		// Added Components to the Deletion of Resident Information.
 		jpanelResidentDeletion.add(deletinglabel);
 		jpanelResidentDeletion.add(searchResidentID);
@@ -883,7 +973,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		jpanelResidentDeletion.add(lastNameDelete_lbl);
 		jpanelResidentDeletion.add(lastNameDelete_txtf);
 		jpanelResidentDeletion.add(suffixDelete_lbl);
-		jpanelResidentDeletion.add(suffixDelete_txtf);		
+		jpanelResidentDeletion.add(suffixDelete_txtf);
 		jpanelResidentDeletion.add(phoneNumberDelete_lbl);
 		jpanelResidentDeletion.add(phoneNumberDelete_txtf);
 		jpanelResidentDeletion.add(addressDelete_lbl);
@@ -911,8 +1001,8 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		jpanelResidentDeletion.add(vaccinationDateSecondDoseDelete_txtf);
 		jpanelResidentDeletion.add(residentDeletion_btn);
 		jpanelResidentDeletion.add(deletedResidentInformation_btn);
-		
-		// Added Components to the Adding Resident Registration.	
+
+		// Added Components to the Adding Resident Registration.
 		jpanelResidentRegistration.add(lblVaccinationInfomation);
 		jpanelResidentRegistration.add(vaccineQuestion);
 		jpanelResidentRegistration.add(yes_rb);
@@ -955,35 +1045,41 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		jpanelResidentRegistration.add(firstName_txtf);
 		jpanelResidentRegistration.add(firstname_lbl);
 		jpanelResidentRegistration.add(registerlabel);
+
+		// Added Components to ResidentList JPanel
+		jpanelResidentList.add(residentList_lbl);
+		jpanelResidentList.add(residentListScroll);
 		
 		// Side Menu Bar.
 		sideMenuBar.add(deleteResident);
 		sideMenuBar.add(addResident);
 		sideMenuBar.add(logoutButton);
 		sideMenuBar.add(labelHomePage);
-		
+		sideMenuBar.add(residentList);
+
 		// The Main Frame where all of the components are stored.
 		jframe.add(sideMenuBar);
-		jframe.add(addRessidentScroll);
+		jframe.add(addResidentScroll);
 		jframe.add(deleteResidentScroll);
+		jframe.add(jpanelResidentList);
 	}
-	
-	
+
 	//
 	// Deleted Resident Information.
 	//
+	
 	public void deletedResidentInformation() {
-		
+
 		JLabel residentId_lbl2 = new JLabel();
 		residentId_lbl2.setText("Enter Resident ID: ");
 		residentId_lbl2.setFont(new Font("Helvetica", Font.BOLD, 18));
 		residentId_lbl2.setForeground(Color.WHITE);
 		residentId_lbl2.setBounds(230, 50, 200, 25);
-		
+
 		search_txtf = new JTextField();
 		search_txtf.setFont(new Font("Helvetica", Font.BOLD, 20));
 		search_txtf.setBounds(395, 47, 130, 30);
-		
+
 		restore_btn = new JButton();
 		restore_btn.setFocusable(false);
 		restore_btn.setFont(new Font("Helvetica", Font.BOLD, 14));
@@ -992,8 +1088,8 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		restore_btn.setBackground(Color.LIGHT_GRAY);
 		restore_btn.addActionListener(this);
 		restore_btn.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		restore_btn.setBounds(540, 47, 100, 30); 
-	
+		restore_btn.setBounds(540, 47, 100, 30);
+
 		tableModel = new DefaultTableModel();
 		tableModel.addColumn("Resident ID");
 		tableModel.addColumn("First Name");
@@ -1011,6 +1107,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		tableModel.addColumn("2nd Dose Manufacturer Name");
 		tableModel.addColumn("2nd Dose BatchNo");
 		tableModel.addColumn("2nd Dose Vaccination Date");
+		
 		jtable = new JTable(tableModel);
 		jtable.setModel(tableModel);
 		jtable.setEnabled(false);
@@ -1033,7 +1130,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		jtable.setAutoResizeMode(0);
 		jtable.setPreferredSize(new Dimension(4750, 1000));
 		jtable.setFillsViewportHeight(true);
-		
+
 		// Scroll Pane for the Resident Registration.
 		addjtableScroll = new JScrollPane(jtable);
 		addjtableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -1041,10 +1138,10 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		addjtableScroll.setVisible(true);
 		addjtableScroll.getVerticalScrollBar().setUnitIncrement(10);
 		addjtableScroll.setBounds(50, 100, 800, 350);
-		
+
 		// Icon Properties.
 		ImageIcon deletedResidentInformationIcon = new ImageIcon("img/concepcion uno logo.png");
-		
+
 		// JFrame Properties.
 		deletedframe = new JFrame();
 		deletedframe.setTitle("Deleted Resident Information");
@@ -1053,62 +1150,51 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 		deletedframe.setLayout(null);
 		deletedframe.setSize(900, 500);
 		deletedframe.getContentPane().setBackground(new Color(2, 53, 130));
-		deletedframe.setLocationRelativeTo(null);	
+		deletedframe.setLocationRelativeTo(null);
 		deletedframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		// added components to the JFrame.
 		deletedframe.setIconImage(deletedResidentInformationIcon.getImage());
 		deletedframe.add(residentId_lbl2);
 		deletedframe.add(search_txtf);
 		deletedframe.add(restore_btn);
 		deletedframe.add(addjtableScroll);
-	
+
 		// This Will Show the Data Inside the Database.
-				deletedframe.addWindowListener(new WindowAdapter() {
-					
-					public void windowOpened(WindowEvent e) {
-												
-						try {
-							listOfDeletedResident();
-						
-							while(myrst.next()){
-								tableModel.addRow(new Object[] {
-									myrst.getString("resident_id"),
-									myrst.getString("first_name"),
-									myrst.getString("middle_initial"),
-									myrst.getString("last_name"),
-									myrst.getString("suffix"),
-									myrst.getString("phone_number"),
-									myrst.getString("address"),
-									myrst.getString("email_address"),
-									myrst.getString("status"),
-									myrst.getString("gender"),
-									myrst.getString("1stDose_ManufacturerName"),
-									myrst.getString("1stDose_BatchNo"),
-									myrst.getString("1stDose_VaccinationDate"),
-									myrst.getString("2ndDose_ManufacturerName"),
-									myrst.getString("2ndDose_BatchNo"),
-									myrst.getString("2ndDose_VaccinationDate")
+		deletedframe.addWindowListener(new WindowAdapter() {
+
+			public void windowOpened(WindowEvent e) {
+
+				try {
+					listOfDeletedResident();
+
+					while (myrst.next()) {
+						tableModel.addRow(new Object[] { 
+								myrst.getString("resident_id"), myrst.getString("first_name"),
+								myrst.getString("middle_initial"), myrst.getString("last_name"),
+								myrst.getString("suffix"), myrst.getString("phone_number"), myrst.getString("address"),
+								myrst.getString("email_address"), myrst.getString("status"), myrst.getString("gender"),
+								myrst.getString("1stDose_ManufacturerName"), myrst.getString("1stDose_BatchNo"),
+								myrst.getString("1stDose_VaccinationDate"), myrst.getString("2ndDose_ManufacturerName"),
+								myrst.getString("2ndDose_BatchNo"), myrst.getString("2ndDose_VaccinationDate") 
 								});
-								
-							}
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
 					}
-				});
-				
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
 		// This will set the button to enable after closing this frame.
 		deletedframe.addWindowListener(new WindowAdapter() {
-		
+
 			public void windowClosed(WindowEvent e) {
 				deletedResidentInformation_btn.setEnabled(true);
 			}
 		});
-		
 	}
-	
+
 	//
 	// This is ActionPerformed.
 	//
@@ -1118,20 +1204,20 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 
 		// the Employee will login and will open the Home page of the Profiling System
 		if (e.getSource() == buttonLogin) {
-			try {	
-			String user = usernameTextField.getText();
-			String pass = userpassword.getText();
-			String usernameindb = null;
-			String userpassindb = null;
-			
-			employeeLogin(user, pass);
-					
+			try {
+				String user = usernameTextField.getText();
+				String pass = userpassword.getText();
+				String usernameindb = null;
+				String userpassindb = null;
+
+				employeeLogin(user, pass);
+
 				while (myrst.next()) {
-					 usernameindb = myrst.getString("username");
-					 userpassindb = myrst.getString("password");
+					usernameindb = myrst.getString("username");
+					userpassindb = myrst.getString("password");
 				}
-				
-				if(user.equals(usernameindb) && pass.equals(userpassindb)) {
+
+				if (user.equals(usernameindb) && pass.equals(userpassindb)) {
 					LoginFrame.dispose();
 					residentRegistrationPage();
 					searchResidentIDDelete_txtf.setVisible(false);
@@ -1159,7 +1245,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 						JOptionPane.ERROR_MESSAGE);
 				e1.getSQLState();
 			}
-		}	
+		}
 
 		// The Employee will be logout back to the Login Page
 		if (e.getSource() == logoutButton) {
@@ -1182,9 +1268,9 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 				randomId_txtf.setText("" + element);
 			}
 		}
-		
+
 		// This is for the vaccination Iformation radiobutton.
-		if(e.getSource()==yes_rb) {
+		if (e.getSource() == yes_rb) {
 			vaccinationDateFirstDose_txtf.setEditable(true);
 			vaccinationDateSecondDose_txtf.setEditable(true);
 			manufacturerNameFirstDose_txtf.setEditable(true);
@@ -1198,7 +1284,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 			vaccinationDateFirstDose_txtf.setText("YYYY-MM-DD");
 			vaccinationDateSecondDose_txtf.setText("YYYY-MM-DD");
 		}
-		if(e.getSource() == no_rb) {
+		if (e.getSource() == no_rb) {
 			manufacturerNameFirstDose_txtf.setEditable(false);
 			vaccinationDateFirstDose_txtf.setEditable(false);
 			vaccinationDateSecondDose_txtf.setEditable(false);
@@ -1215,8 +1301,9 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 
 		// This will insert the resident details in the database
 		if (e.getSource() == addButton) {
-			
-			if(CheckDate(vaccinationDateFirstDose_txtf.getText()) && CheckDate(vaccinationDateSecondDose_txtf.getText())) {
+
+			if (CheckDate(vaccinationDateFirstDose_txtf.getText())
+					&& CheckDate(vaccinationDateSecondDose_txtf.getText())) {
 				try {
 					long randomId = Long.parseLong(randomId_txtf.getText());
 					long phoneNum = Long.parseLong(phoneNumber_txtf.getText());
@@ -1225,57 +1312,63 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 
 					addResidentdb(randomId, firstName_txtf.getText(), lastName_txtf.getText(), suffix_txtf.getText(),
 							middleInitial_txtf.getText(), phoneNum, address_txtf.getText(), emailAdd_txtf.getText(),
-							userStatus, userGender,manufacturerNameFirstDose_txtf.getText(), batchNumFirstDose_txtf.getText(),
-							vaccinationDateFirstDose_txtf.getText(),manufacturerNameSecondDose_txtf.getText(), 
-							batchNumSecondDose_txtf.getText(), vaccinationDateSecondDose_txtf.getText());
+							userStatus, userGender, manufacturerNameFirstDose_txtf.getText(),
+							batchNumFirstDose_txtf.getText(), vaccinationDateFirstDose_txtf.getText(),
+							manufacturerNameSecondDose_txtf.getText(), batchNumSecondDose_txtf.getText(),
+							vaccinationDateSecondDose_txtf.getText());
 
 					if (getResidentAdded() >= 1) {
-						JOptionPane.showMessageDialog(null, firstName_txtf.getText() + " is now Added Successfully!", "Added Successfully",
-								JOptionPane.INFORMATION_MESSAGE);
-					generateRandomId.setEnabled(true);
-					randomId_txtf.setText("");
-					emailAdd_txtf.setText("");
-					firstName_txtf.setText("");
-					middleInitial_txtf.setText("");
-					lastName_txtf.setText("");
-					address_txtf.setText("");
-					phoneNumber_txtf.setText("");
-					gender_txtb.setSelectedIndex(0);
-					status_txtb.setSelectedIndex(0);
-					manufacturerNameFirstDose_txtf.setText("");
-					batchNumFirstDose_txtf.setText("");
-					vaccinationDateSecondDose_txtf.setText("YYYY/MM/DD");
-					vaccinationDateFirstDose_txtf.setText("YYYY/MM/DD");
-					manufacturerNameSecondDose_txtf.setText("");
-					batchNumSecondDose_txtf.setText("");
-					yes_rb.setSelected(false);
-					no_rb.setSelected(false);
-					
+						JOptionPane.showMessageDialog(null, firstName_txtf.getText() + " is now Added Successfully!",
+								"Added Successfully", JOptionPane.INFORMATION_MESSAGE);
+						generateRandomId.setEnabled(true);
+						randomId_txtf.setText("");
+						emailAdd_txtf.setText("");
+						firstName_txtf.setText("");
+						middleInitial_txtf.setText("");
+						lastName_txtf.setText("");
+						address_txtf.setText("");
+						phoneNumber_txtf.setText("");
+						gender_txtb.setSelectedIndex(0);
+						status_txtb.setSelectedIndex(0);
+						manufacturerNameFirstDose_txtf.setText("");
+						batchNumFirstDose_txtf.setText("");
+						vaccinationDateSecondDose_txtf.setText("YYYY/MM/DD");
+						vaccinationDateFirstDose_txtf.setText("YYYY/MM/DD");
+						manufacturerNameSecondDose_txtf.setText("");
+						batchNumSecondDose_txtf.setText("");
+						yes_rb.setSelected(false);
+						no_rb.setSelected(false);
+
 					}
 				} catch (Exception ewan) {
 					JOptionPane.showMessageDialog(null, "Fillup all the form!", "Error", JOptionPane.ERROR_MESSAGE);
 					ewan.getStackTrace();
 				}
 				suffix_txtf.setText("");
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(null, "Invalid Date Format", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		
+
 		// This will now Open the Panel of the add Resident Jpanel and hide the Delete
 		// Resident Jpanel
 		if (e.getSource() == addResident) {
-			addRessidentScroll.setVisible(true);
+			addResidentScroll.setVisible(true);
 			jpanelResidentRegistration.setVisible(true);
 			jpanelResidentDeletion.setVisible(false);
+			jpanelResidentList.setVisible(false);
+			residentListScroll.setVisible(false);
 		}
-		
+
 		// This will now Open the Panel of the Delete Resident Jpanel and hide the add
 		// Resident JPanel
 		if (e.getSource() == deleteResident) {
 			jpanelResidentDeletion.setVisible(true);
-			addRessidentScroll.setVisible(false);
+			addResidentScroll.setVisible(false);
 			jpanelResidentRegistration.setVisible(false);
+			jpanelResidentList.setVisible(false);
+			residentListScroll.setVisible(false);
+			deleteResidentScroll.setVisible(true);
 			searchResidentIDDelete_txtf.setVisible(true);
 			firstNameDelete_txtf.setVisible(true);
 			middleNameDelete_txtf.setVisible(true);
@@ -1294,15 +1387,44 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 			genderDelete_txtf.setVisible(true);
 		}
 		
+		// This Will Open the List of the Residents in Concepcion Uno 
+		if (e.getSource() == residentList) {
+			jpanelResidentList.setVisible(true);
+			residentListScroll.setVisible(true);	
+			jpanelResidentDeletion.setVisible(false);
+			jpanelResidentRegistration.setVisible(false);
+			addResidentScroll.setVisible(false);
+			deleteResidentScroll.setVisible(false);
+			
+			try {
+				listOfResident();
+				
+				while (myrst.next()) {
+					listTableModel.addRow(new Object[] { 
+							myrst.getString("resident_id"), myrst.getString("first_name"),
+							myrst.getString("middle_initial"), myrst.getString("last_name"),
+							myrst.getString("suffix"), myrst.getString("phone_number"), myrst.getString("address"),
+							myrst.getString("email_address"), myrst.getString("status"), myrst.getString("gender"),
+							myrst.getString("1stDose_ManufacturerName"), myrst.getString("1stDose_BatchNo"),
+							myrst.getString("1stDose_VaccinationDate"), myrst.getString("2ndDose_ManufacturerName"),
+							myrst.getString("2ndDose_BatchNo"), myrst.getString("2ndDose_VaccinationDate") 
+							});
+				}
+				
+			} catch (Exception e2) {
+				e2.getStackTrace();
+			}
+		}
+
 		// Search for the Resident with the Use of the Resident ID (DELETE SECTION)
-		if(e.getSource() == searchResidentID_btn) {
+		if (e.getSource() == searchResidentID_btn) {
 			try {
 				int resident_ID = Integer.parseInt(searchResidentIDDelete_txtf.getText());
-			
+
 				getResidentDetails(resident_ID);
-				
-				while(myrst.next()) {
-					
+
+				while (myrst.next()) {
+
 					firstNameDelete_txtf.setText(myrst.getString(2));
 					middleNameDelete_txtf.setText(myrst.getString(3));
 					lastNameDelete_txtf.setText(myrst.getString(4));
@@ -1319,71 +1441,74 @@ public class Profiling_System extends JDBC_Connector implements ActionListener{
 					batchNumSecondDoseDelete_txtf.setText(myrst.getString(15));
 					vaccinationDateSecondDoseDelete_txtf.setText(myrst.getString(16));
 				}
-			}catch(Exception e2) {
+			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(null, "Please Enter Resident ID!", "Error!", JOptionPane.ERROR_MESSAGE);
 				searchResidentIDDelete_txtf.setText("");
 				e2.getStackTrace();
 			}
 		}
-		
+
 		// This will delete the information of the resident.
-		if(e.getSource() == residentDeletion_btn) {
-			try {	
-			int residentID = Integer.parseInt(searchResidentIDDelete_txtf.getText());
-				
-			deleteResidentInformation(residentID);
-			
-			if(getResidentDeleted() >= 1) {
-				JOptionPane.showMessageDialog(null, "Resident Data is Deleted Successfully", "Deleted Succesfuly", JOptionPane.INFORMATION_MESSAGE);
-				firstNameDelete_txtf.setText("");
-				middleNameDelete_txtf.setText("");
-				lastNameDelete_txtf.setText("");
-				suffixDelete_txtf.setText("");
-				statusDelete_txtf.setText("");
-				genderDelete_txtf.setText("");
-				phoneNumberDelete_txtf.setText("");
-				emailAddressDelete_txtf.setText("");
-				addressDelete_txtf.setText("");
-				
-				manufacturerNameFirstDoseDelete_txtf.setText("");
-				batchNumFirstDoseDelete_txtf.setText("");
-				vaccinationDateFirstDoseDelete_txtf.setText("");
-				manufacturerNameSecondDoseDelete_txtf.setText("");
-				batchNumSecondDoseDelete_txtf.setText("");
-				vaccinationDateSecondDoseDelete_txtf.setText("");
-			}
-			}catch(Exception sql) {
+		if (e.getSource() == residentDeletion_btn) {
+			try {
+				int residentID = Integer.parseInt(searchResidentIDDelete_txtf.getText());
+
+				deleteResidentInformation(residentID);
+
+				if (getResidentDeleted() >= 1) {
+					JOptionPane.showMessageDialog(null, "Resident Data is Deleted Successfully", "Deleted Succesfuly",
+							JOptionPane.INFORMATION_MESSAGE);
+					firstNameDelete_txtf.setText("");
+					middleNameDelete_txtf.setText("");
+					lastNameDelete_txtf.setText("");
+					suffixDelete_txtf.setText("");
+					statusDelete_txtf.setText("");
+					genderDelete_txtf.setText("");
+					phoneNumberDelete_txtf.setText("");
+					emailAddressDelete_txtf.setText("");
+					addressDelete_txtf.setText("");
+
+					manufacturerNameFirstDoseDelete_txtf.setText("");
+					batchNumFirstDoseDelete_txtf.setText("");
+					vaccinationDateFirstDoseDelete_txtf.setText("");
+					manufacturerNameSecondDoseDelete_txtf.setText("");
+					batchNumSecondDoseDelete_txtf.setText("");
+					vaccinationDateSecondDoseDelete_txtf.setText("");
+				}
+			} catch (Exception sql) {
 				JOptionPane.showMessageDialog(null, "No Resident Deleted", "Failed", JOptionPane.INFORMATION_MESSAGE);
 				sql.getStackTrace();
 			}
 		}
-		
-		// this will show the deleted Infromation of the Resident and the employee can restore the deleted information.
-		if(e.getSource() == deletedResidentInformation_btn) {
+
+		// this will show the deleted Infromation of the Resident and the employee can
+		// restore the deleted information.
+		if (e.getSource() == deletedResidentInformation_btn) {
 			deletedResidentInformation();
 			deletedResidentInformation_btn.setEnabled(false);
-		}	
+		}
+
 		// This will Restore the deleted informationa of the resident
-		if(e.getSource() == restore_btn) {
+		if (e.getSource() == restore_btn) {
 			try {
 				int id = Integer.parseInt(search_txtf.getText());
 				restoreDeletedResident(id);
-				
-				if(getResidentRestored() >= 1) {
-					JOptionPane.showMessageDialog(null, "Resident Data is Restored Successfully", "Restored Succesfuly", JOptionPane.INFORMATION_MESSAGE);
+
+				if (getResidentRestored() >= 1) {
+					JOptionPane.showMessageDialog(null, "Resident Data is Restored Successfully", "Restored Succesfuly",
+							JOptionPane.INFORMATION_MESSAGE);
 					search_txtf.setText("");
-				}else {
-					JOptionPane.showMessageDialog(null, "Failed, Please Check the Resident ID!", "Error!", JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed, Please Check the Resident ID!", "Error!",
+							JOptionPane.ERROR_MESSAGE);
 				}
-				
-				
 			} catch (NumberFormatException e2) {
-				JOptionPane.showMessageDialog(null, "Failed, Please Check the Resident ID!", "Error!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Failed, Please Check the Resident ID!", "Error!",
+						JOptionPane.ERROR_MESSAGE);
 			}
-			
 		}
-		
-		// Clearing the TextField in the Resident Registration Jpanel
+
+		// Clearing the TextField in the Resident Registration JPanel
 		if (e.getSource() == clearButton) {
 			generateRandomId.setEnabled(true);
 			randomId_txtf.setText("");
