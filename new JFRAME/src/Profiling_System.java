@@ -785,7 +785,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		listJtable = new JTable(listTableModel);
 		listJtable.setModel(listTableModel);
 		listJtable.setEnabled(false);
-		listJtable.getColumnModel().getColumn(0).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(0).setPreferredWidth(100);
 		listJtable.getColumnModel().getColumn(1).setPreferredWidth(200);
 		listJtable.getColumnModel().getColumn(2).setPreferredWidth(200);
 		listJtable.getColumnModel().getColumn(3).setPreferredWidth(200);
@@ -795,14 +795,14 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		listJtable.getColumnModel().getColumn(7).setPreferredWidth(250);
 		listJtable.getColumnModel().getColumn(8).setPreferredWidth(200);
 		listJtable.getColumnModel().getColumn(9).setPreferredWidth(200);
-		listJtable.getColumnModel().getColumn(10).setPreferredWidth(400);
-		listJtable.getColumnModel().getColumn(11).setPreferredWidth(400);
-		listJtable.getColumnModel().getColumn(12).setPreferredWidth(400);
-		listJtable.getColumnModel().getColumn(13).setPreferredWidth(400);
-		listJtable.getColumnModel().getColumn(14).setPreferredWidth(400);
-		listJtable.getColumnModel().getColumn(15).setPreferredWidth(400);
+		listJtable.getColumnModel().getColumn(10).setPreferredWidth(300);
+		listJtable.getColumnModel().getColumn(11).setPreferredWidth(300);
+		listJtable.getColumnModel().getColumn(12).setPreferredWidth(300);
+		listJtable.getColumnModel().getColumn(13).setPreferredWidth(300);
+		listJtable.getColumnModel().getColumn(14).setPreferredWidth(300);
+		listJtable.getColumnModel().getColumn(15).setPreferredWidth(300);
 		listJtable.setAutoResizeMode(0);
-		listJtable.setPreferredSize(new Dimension(4750, 1000));
+		listJtable.setPreferredSize(new Dimension(3500, 1000));
 		listJtable.setFillsViewportHeight(true);
 		
 		residentListScroll = new JScrollPane(listJtable);
@@ -1399,6 +1399,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 			try {
 				listOfResident();
 				
+				listTableModel.setRowCount(0);
 				while (myrst.next()) {
 					listTableModel.addRow(new Object[] { 
 							myrst.getString("resident_id"), myrst.getString("first_name"),
@@ -1410,9 +1411,9 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 							myrst.getString("2ndDose_BatchNo"), myrst.getString("2ndDose_VaccinationDate") 
 							});
 				}
-				
-			} catch (Exception e2) {
-				e2.getStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 
