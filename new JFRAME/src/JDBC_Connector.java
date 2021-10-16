@@ -301,9 +301,6 @@ public class JDBC_Connector {
 		try {
 			setResident_id(resident_ID);
 
-			myCon = DriverManager.getConnection(connection, username, password);
-			myCon.setAutoCommit(false);
-
 			myStmnt = myCon.prepareStatement("UPDATE resident SET deleted = 1 where resident_id = ?");
 
 			myStmnt.setLong(1, getResident_id());
@@ -437,7 +434,6 @@ public class JDBC_Connector {
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-
 	}
 
 	// this will check if the date format inputted is correct or not. if not? it
