@@ -99,6 +99,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 
 	JButton addButton;
 	JButton clearButton;
+	JButton updateButton;
 	JButton generateRandomId;
 	JScrollPane addResidentScroll;
 	JPanel jpanelResidentRegistration;
@@ -144,7 +145,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 	JButton deletedResidentInformation_btn;
 
 	// deleted resident information properties.
-	JFrame deletedframe;
+	JFrame deletedFrame;
 	JTextField search_txtf;
 	JButton restore_btn;
 	JTable jtable;
@@ -157,11 +158,16 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 	JScrollPane residentListScroll;
 	DefaultTableModel listTableModel;
 	JTable listJtable;
-
+	
+	// Update Resident Information
+	JFrame updateFrame;
+	DefaultTableModel updateTableModel;
+	JTable updateJtable;
+	JScrollPane updateJScroll;
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// //
-	// LOGIN PAGE OF THE PROFILING SYSTTEM. //
-	// //
+	//                                                                                                                     //
+	// LOGIN PAGE OF THE PROFILING SYSTTEM.                                                                                //
+	//                                                                                                                     //
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public Profiling_System() {
@@ -255,9 +261,9 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// //
-	// HOHE PAGE OF RESIDENT REGISTRATION PROFILING SYSTTEM. //
-	// //
+	//                                                                                                                     //
+	// HOHE PAGE OF RESIDENT REGISTRATION PROFILING SYSTTEM.                                                               //
+	//                                                                                                                      //
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public void residentRegistrationPage() {
@@ -406,7 +412,17 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		addButton.setBackground(Color.GREEN);
 		addButton.addActionListener(this);
 		addButton.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-
+		
+		updateButton = new JButton();
+		updateButton.setText("Update");
+		updateButton.setFont(new Font("Helvetica", Font.BOLD, 14));
+		updateButton.setBounds(500, 1050, 140, 40);
+		updateButton.setFocusable(false);
+		updateButton.setForeground(Color.BLACK);
+		updateButton.setBackground(Color.LIGHT_GRAY);
+		updateButton.addActionListener(this);
+		updateButton.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		
 		gender_lbl = new JLabel();
 		gender_lbl.setText("Gender: ");
 		gender_lbl.setFont(new Font("Helvetica", Font.BOLD, 18));
@@ -789,7 +805,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		listJtable.getColumnModel().getColumn(1).setPreferredWidth(200);
 		listJtable.getColumnModel().getColumn(2).setPreferredWidth(200);
 		listJtable.getColumnModel().getColumn(3).setPreferredWidth(200);
-		listJtable.getColumnModel().getColumn(4).setPreferredWidth(200);
+		listJtable.getColumnModel().getColumn(4).setPreferredWidth(50);
 		listJtable.getColumnModel().getColumn(5).setPreferredWidth(200);
 		listJtable.getColumnModel().getColumn(6).setPreferredWidth(500);
 		listJtable.getColumnModel().getColumn(7).setPreferredWidth(250);
@@ -802,7 +818,6 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		listJtable.getColumnModel().getColumn(14).setPreferredWidth(300);
 		listJtable.getColumnModel().getColumn(15).setPreferredWidth(300);
 		listJtable.setAutoResizeMode(0);
-		listJtable.setPreferredSize(new Dimension(3500, 1000));
 		listJtable.setFillsViewportHeight(true);
 		
 		residentListScroll = new JScrollPane(listJtable);
@@ -1023,6 +1038,7 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		jpanelResidentRegistration.add(vaccinationDateSecondDose_txtf);
 		jpanelResidentRegistration.add(clearButton);
 		jpanelResidentRegistration.add(addButton);
+		jpanelResidentRegistration.add(updateButton);
 		jpanelResidentRegistration.add(gender_txtb);
 		jpanelResidentRegistration.add(gender_lbl);
 		jpanelResidentRegistration.add(emailAdd_lbl);
@@ -1111,11 +1127,12 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		jtable = new JTable(tableModel);
 		jtable.setModel(tableModel);
 		jtable.setEnabled(false);
+		jtable.setFocusable(false);
 		jtable.getColumnModel().getColumn(0).setPreferredWidth(200);
 		jtable.getColumnModel().getColumn(1).setPreferredWidth(200);
 		jtable.getColumnModel().getColumn(2).setPreferredWidth(200);
 		jtable.getColumnModel().getColumn(3).setPreferredWidth(200);
-		jtable.getColumnModel().getColumn(4).setPreferredWidth(200);
+		jtable.getColumnModel().getColumn(4).setPreferredWidth(50);
 		jtable.getColumnModel().getColumn(5).setPreferredWidth(200);
 		jtable.getColumnModel().getColumn(6).setPreferredWidth(500);
 		jtable.getColumnModel().getColumn(7).setPreferredWidth(250);
@@ -1128,7 +1145,6 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		jtable.getColumnModel().getColumn(14).setPreferredWidth(400);
 		jtable.getColumnModel().getColumn(15).setPreferredWidth(400);
 		jtable.setAutoResizeMode(0);
-		jtable.setPreferredSize(new Dimension(4750, 1000));
 		jtable.setFillsViewportHeight(true);
 
 		// Scroll Pane for the Resident Registration.
@@ -1143,25 +1159,25 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		ImageIcon deletedResidentInformationIcon = new ImageIcon("img/concepcion uno logo.png");
 
 		// JFrame Properties.
-		deletedframe = new JFrame();
-		deletedframe.setTitle("Deleted Resident Information");
-		deletedframe.setVisible(true);
-		deletedframe.setResizable(false);
-		deletedframe.setLayout(null);
-		deletedframe.setSize(900, 500);
-		deletedframe.getContentPane().setBackground(new Color(2, 53, 130));
-		deletedframe.setLocationRelativeTo(null);
-		deletedframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		deletedFrame = new JFrame();
+		deletedFrame.setTitle("Deleted Resident Information");
+		deletedFrame.setVisible(true);
+		deletedFrame.setResizable(false);
+		deletedFrame.setLayout(null);
+		deletedFrame.setSize(900, 500);
+		deletedFrame.getContentPane().setBackground(new Color(2, 53, 130));
+		deletedFrame.setLocationRelativeTo(null);
+		deletedFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		// added components to the JFrame.
-		deletedframe.setIconImage(deletedResidentInformationIcon.getImage());
-		deletedframe.add(residentId_lbl2);
-		deletedframe.add(search_txtf);
-		deletedframe.add(restore_btn);
-		deletedframe.add(addjtableScroll);
+		deletedFrame.setIconImage(deletedResidentInformationIcon.getImage());
+		deletedFrame.add(residentId_lbl2);
+		deletedFrame.add(search_txtf);
+		deletedFrame.add(restore_btn);
+		deletedFrame.add(addjtableScroll);
 
 		// This Will Show the Data Inside the Database.
-		deletedframe.addWindowListener(new WindowAdapter() {
+		deletedFrame.addWindowListener(new WindowAdapter() {
 
 			public void windowOpened(WindowEvent e) {
 
@@ -1187,10 +1203,106 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 		});
 
 		// This will set the button to enable after closing this frame.
-		deletedframe.addWindowListener(new WindowAdapter() {
+		deletedFrame.addWindowListener(new WindowAdapter() {
 
 			public void windowClosed(WindowEvent e) {
 				deletedResidentInformation_btn.setEnabled(true);
+			}
+		});
+	}
+	
+	public void UpdateSelectedResidentID() {
+		
+		updateTableModel = new DefaultTableModel();
+		updateTableModel.addColumn("Resident ID");
+		updateTableModel.addColumn("First Name");
+		updateTableModel.addColumn("Middle Name");
+		updateTableModel.addColumn("Last Name");
+		updateTableModel.addColumn("Suffix");
+		updateTableModel.addColumn("Phone Number");
+		updateTableModel.addColumn("Address");
+		updateTableModel.addColumn("Email Address");
+		updateTableModel.addColumn("Status");
+		updateTableModel.addColumn("Gender");
+		updateTableModel.addColumn("1st Dose Manufacturer Name");
+		updateTableModel.addColumn("1st Dose BatchNo");
+		updateTableModel.addColumn("1st Dose Vaccination Date");
+		updateTableModel.addColumn("2nd Dose Manufacturer Name");
+		updateTableModel.addColumn("2nd Dose BatchNo");
+		updateTableModel.addColumn("2nd Dose Vaccination Date");
+		
+		updateJtable = new JTable(updateTableModel);
+		updateJtable.setModel(updateTableModel);
+		updateJtable.setEnabled(false);
+		updateJtable.setFocusable(false);
+		updateJtable.getColumnModel().getColumn(0).setPreferredWidth(200);
+		updateJtable.getColumnModel().getColumn(1).setPreferredWidth(200);
+		updateJtable.getColumnModel().getColumn(2).setPreferredWidth(200);
+		updateJtable.getColumnModel().getColumn(3).setPreferredWidth(200);
+		updateJtable.getColumnModel().getColumn(4).setPreferredWidth(50);
+		updateJtable.getColumnModel().getColumn(5).setPreferredWidth(200);
+		updateJtable.getColumnModel().getColumn(6).setPreferredWidth(500);
+		updateJtable.getColumnModel().getColumn(7).setPreferredWidth(250);
+		updateJtable.getColumnModel().getColumn(8).setPreferredWidth(200);
+		updateJtable.getColumnModel().getColumn(9).setPreferredWidth(200);
+		updateJtable.getColumnModel().getColumn(10).setPreferredWidth(400);
+		updateJtable.getColumnModel().getColumn(11).setPreferredWidth(400);
+		updateJtable.getColumnModel().getColumn(12).setPreferredWidth(400);
+		updateJtable.getColumnModel().getColumn(13).setPreferredWidth(400);
+		updateJtable.getColumnModel().getColumn(14).setPreferredWidth(400);
+		updateJtable.getColumnModel().getColumn(15).setPreferredWidth(400);
+		updateJtable.setAutoResizeMode(0);
+		updateJtable.setFillsViewportHeight(true);
+		
+		// Icon 
+		ImageIcon iconUpdate = new ImageIcon("img/concepcion uno logo.png");
+		// Frame
+		updateFrame = new JFrame();
+		updateFrame.setTitle("Update Resident Information");
+		updateFrame.setIconImage(iconUpdate.getImage());
+		updateFrame.setLayout(null);
+		updateFrame.getContentPane().setBackground(new Color(2, 53, 130));
+		updateFrame.setSize(new Dimension(900,700));
+		updateFrame.setLocationRelativeTo(null);
+		updateFrame.setVisible(true);
+		updateFrame.setResizable(false);		
+		updateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		updateJScroll = new JScrollPane(updateJtable);
+		updateJScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		updateJScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		updateJScroll.setVisible(true);
+		updateJScroll.getVerticalScrollBar().setUnitIncrement(10);
+		updateJScroll.setBounds(15, 440, 855, 210);
+		
+		updateFrame.add(updateJScroll);
+		
+		
+		updateFrame.addWindowListener(new WindowAdapter() {
+			public void windowOpened(WindowEvent e1) {
+				try {
+					listOfResident();
+					
+					while(myrst.next()) {
+						updateTableModel.addRow(new Object[] { 
+								myrst.getString("resident_id"), myrst.getString("first_name"),
+								myrst.getString("middle_initial"), myrst.getString("last_name"),
+								myrst.getString("suffix"), myrst.getString("phone_number"), myrst.getString("address"),
+								myrst.getString("email_address"), myrst.getString("status"), myrst.getString("gender"),
+								myrst.getString("1stDose_ManufacturerName"), myrst.getString("1stDose_BatchNo"),
+								myrst.getString("1stDose_VaccinationDate"), myrst.getString("2ndDose_ManufacturerName"),
+								myrst.getString("2ndDose_BatchNo"), myrst.getString("2ndDose_VaccinationDate") 
+								});
+					}
+				} catch (Exception e) {
+					e.getStackTrace();
+				}
+			}
+		});
+		
+		updateFrame.addWindowListener(new WindowAdapter() {
+			public void windowClosed(WindowEvent e) {
+				updateButton.setEnabled(true);
 			}
 		});
 	}
@@ -1348,6 +1460,11 @@ public class Profiling_System extends JDBC_Connector implements ActionListener {
 			} else {
 				JOptionPane.showMessageDialog(null, "Invalid Date Format", "Error", JOptionPane.ERROR_MESSAGE);
 			}
+		}
+		
+		if(e.getSource() == updateButton) {
+			UpdateSelectedResidentID();	
+			updateButton.setEnabled(false);
 		}
 
 		// This will now Open the Panel of the add Resident Jpanel and hide the Delete
